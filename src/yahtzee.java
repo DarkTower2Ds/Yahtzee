@@ -18,6 +18,9 @@ public class yahtzee extends JPanel implements ItemListener{
 	JTextArea die6Text;
 	JButton reRollButton;
 	JButton endTurnButton;
+	JTextArea currentPlayer;
+	JTextArea currentPlayerScore;
+	JTextArea spacer; //halp
 	
 	public yahtzee(){
 		super(new BorderLayout());
@@ -33,12 +36,21 @@ public class yahtzee extends JPanel implements ItemListener{
 		die4Text = new JTextArea("1");
 		die5Text = new JTextArea("1");
 		
+		currentPlayer = new JTextArea("Player 1");
+		currentPlayerScore = new JTextArea("Score: 0");
+		spacer = new JTextArea("    ");
+		
 		die1Text.setEditable(false);
 		die2Text.setEditable(false);
 		die3Text.setEditable(false);
 		die4Text.setEditable(false);
 		die5Text.setEditable(false);
 		
+		currentPlayer.setEditable(false);
+		currentPlayerScore.setEditable(false);
+		spacer.setEditable(false);
+		
+		Box playerAndScoreBox = Box.createHorizontalBox();
 		
 		Box die1Box = Box.createHorizontalBox();
 		Box die2Box = Box.createHorizontalBox();
@@ -46,7 +58,10 @@ public class yahtzee extends JPanel implements ItemListener{
 		Box die4Box = Box.createHorizontalBox();
 		Box die5Box = Box.createHorizontalBox();
 		
-		
+		playerAndScoreBox.add(currentPlayerScore);
+		playerAndScoreBox.add(spacer);
+		playerAndScoreBox.add(currentPlayer);
+
 		die1Box.add(die1Text);
 		die1Box.add(die1);
 		die2Box.add(die2Text);
@@ -60,11 +75,12 @@ public class yahtzee extends JPanel implements ItemListener{
 		
 		
 		
-		JButton reRollButton = new JButton("ReRoll");
+		JButton reRollButton = new JButton("Re-Roll");
 		JButton endTurnButton = new JButton("End Turn");
 		
 		JPanel checkPanel = new JPanel(new GridLayout(0, 1));
-        checkPanel.add(die1Box);
+        checkPanel.add(playerAndScoreBox);
+		checkPanel.add(die1Box);
         checkPanel.add(die2Box);
         checkPanel.add(die3Box);
         checkPanel.add(die4Box);
