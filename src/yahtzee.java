@@ -10,6 +10,12 @@ public class yahtzee extends JPanel implements ItemListener{
 	JCheckBox die3;
 	JCheckBox die4;
 	JCheckBox die5;
+	JTextArea die1Text;
+	JTextArea die2Text;
+	JTextArea die3Text;
+	JTextArea die4Text;
+	JTextArea die5Text;
+	JTextArea die6Text;
 	JButton reRollButton;
 	JButton endTurnButton;
 	
@@ -21,15 +27,48 @@ public class yahtzee extends JPanel implements ItemListener{
 		die4 = new JCheckBox("Die 4");
 		die5 = new JCheckBox("Die 5");
 		
+		die1Text = new JTextArea("1");
+		die2Text = new JTextArea("1");
+		die3Text = new JTextArea("1");
+		die4Text = new JTextArea("1");
+		die5Text = new JTextArea("1");
+		
+		die1Text.setEditable(false);
+		die2Text.setEditable(false);
+		die3Text.setEditable(false);
+		die4Text.setEditable(false);
+		die5Text.setEditable(false);
+		
+		
+		Box die1Box = Box.createHorizontalBox();
+		Box die2Box = Box.createHorizontalBox();
+		Box die3Box = Box.createHorizontalBox();
+		Box die4Box = Box.createHorizontalBox();
+		Box die5Box = Box.createHorizontalBox();
+		
+		
+		die1Box.add(die1Text);
+		die1Box.add(die1);
+		die2Box.add(die2Text);
+		die2Box.add(die2);
+		die3Box.add(die3Text);
+		die3Box.add(die3);
+		die4Box.add(die4Text);
+		die4Box.add(die4);
+		die5Box.add(die5Text);
+		die5Box.add(die5);
+		
+		
+		
 		JButton reRollButton = new JButton("ReRoll");
 		JButton endTurnButton = new JButton("End Turn");
 		
 		JPanel checkPanel = new JPanel(new GridLayout(0, 1));
-        checkPanel.add(die1);
-        checkPanel.add(die2);
-        checkPanel.add(die3);
-        checkPanel.add(die4);
-        checkPanel.add(die5);
+        checkPanel.add(die1Box);
+        checkPanel.add(die2Box);
+        checkPanel.add(die3Box);
+        checkPanel.add(die4Box);
+        checkPanel.add(die5Box);
         checkPanel.add(reRollButton);
         checkPanel.add(endTurnButton);
  
