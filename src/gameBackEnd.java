@@ -33,9 +33,16 @@ public class gameBackEnd {
 		}else if(isThreeOfAKind(finalDice)){
 			finalScores[player] += sumOfDice(finalDice);
 		}else{
-			
+			playerScoresUpper[player] += upperHalf(finalDice);
+			finalScores[player] += upperHalf(finalDice);
+		}
+		
+		if(player == finalScores - 1){
+			roundsLeft--;
 		}
 	}
+	
+	
 	
 	
 	//sorts the inputed array
@@ -230,7 +237,11 @@ public class gameBackEnd {
 		return threeOfAKind;
 	}
 	
-	//not finished
+	/*
+	*Returns an integer representing the points scored
+	*by a player. This method is called when none of the
+	*lower level (higher tier) scoring options are available
+	*/
 	public int upperHalf(int[] dice){
 		int greatest = 0;
 		
@@ -243,7 +254,9 @@ public class gameBackEnd {
 		}else if(sumOfDice(dice, 3) > sumOfDice(dice, 6) && sumOfDice(dice, 3) > sumOfDice(dice, 5) && sumOfDice(dice, 3) > sumOfDice(dice, 4) && sumOfDice(dice, 3) > sumOfDice(dice, 2) && sumOfDice(dice, 3) > sumOfDice(dice, 1)){
 			greatest = sumOfDice(dice, 3);
 		}else if(sumOfDice(dice, 2) > sumOfDice(dice, 6) && sumOfDice(dice, 2) > sumOfDice(dice, 5) && sumOfDice(dice, 2) > sumOfDice(dice, 4) && sumOfDice(dice, 2) > sumOfDice(dice, 3) && sumOfDice(dice, 2) > sumOfDice(dice, 1)){
-			greatest =sumOfDice(dice, 2);
+			greatest = sumOfDice(dice, 2);
+		}else if(sumOfDice(dice, 1) > sumOfDice(dice, 6) && sumOfDice(dice, 1) > sumOfDice(dice, 5) && sumOfDice(dice, 1) > sumOfDice(dice, 4) && sumOfDice(dice, 1) > sumOfDice(dice, 3) && sumOfDice(dice, 1) > sumOfDice(dice, 2)){
+			greatest = sumOfDice(dice, 1);
 		}
 		
 		return greatest;

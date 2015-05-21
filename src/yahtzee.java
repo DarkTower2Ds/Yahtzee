@@ -25,10 +25,19 @@ public class yahtzee extends JPanel implements ItemListener{
 	public yahtzee(){
 		super(new BorderLayout());
 		die1 = new JCheckBox("Die 1");
+		die1.setMnemonic(KeyEvent.VK_1); //<-- is that how those work?
+		
 		die2 = new JCheckBox("Die 2");
+		die1.setMnemonic(KeyEvent.VK_2);
+		
 		die3 = new JCheckBox("Die 3");
+		die3.setMnemonic(KeyEvent.VK_3);
+		
 		die4 = new JCheckBox("Die 4");
+		die4.setMnemonic(KeyEvent.VK_4);
+		
 		die5 = new JCheckBox("Die 5");
+		die5.setMnemonic(KeyEvent.VK_5);
 		
 		die1Text = new JTextArea("1");
 		die2Text = new JTextArea("1");
@@ -78,6 +87,12 @@ public class yahtzee extends JPanel implements ItemListener{
 		JButton reRollButton = new JButton("Re-Roll");
 		JButton endTurnButton = new JButton("End Turn");
 		
+		reRollButton.setActionCommand("reRoll"); //<-- that's how it works right?
+		endTurnButton.setActionCommand("endTurn");
+		
+		reRollButton.addActionListener(this); //<-- and these?
+		endTurnButton.addActionListener(this);
+		
 		JPanel checkPanel = new JPanel(new GridLayout(0, 1));
         checkPanel.add(playerAndScoreBox);
 		checkPanel.add(die1Box);
@@ -114,5 +129,14 @@ public class yahtzee extends JPanel implements ItemListener{
                 createAndShowGUI();
             }
         });
+		
+		
     }
+	
+	public void nextTurn(int player){
+		int[] dice = new int[5];
+		for(int element : dice){ //<-- is that correct?
+			element = (int) (Math.random() * 5 + 1);
+		}
+	}
 }
