@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class gameBackEnd {
 	private int[] finalScores;
@@ -18,7 +21,7 @@ public class gameBackEnd {
 	 * If no matches are made, then it goes to "Chance"
 	 */
 	public void endTurn(int player, int[] diceInput){
-		int[] finalDice = sortDice(diceInput);
+		int[] finalDice = merge_sort(diceInput);
 		
 		if(isYahtzee(finalDice)){
 			finalScores[player] += 50;
@@ -37,7 +40,7 @@ public class gameBackEnd {
 			finalScores[player] += upperHalf(finalDice);
 		}
 		
-		if(player == finalScores - 1){
+		if(player == finalScores.length - 1){
 			roundsLeft--;
 		}
 	}
@@ -45,27 +48,72 @@ public class gameBackEnd {
 	
 	
 	
-	//sorts the inputed array
-	//Noran, halp
-	public int[] sortDice(int[] input){
-		int[] output = new int[input.length];
-
-		for(int i = 0; i < input.length; i++){
-			int min = Integer.MAX_VALUE;
-			for(int k = i; k < input.length - i; k++){
-				if(input[k] <= min){
-					min = input[k];
-				}
-			}
-			
-			output[i] = min;
+	/*
+	 * Sorts the inputed array
+	 */
+	public int[] merge_sort(int[] A) {
+		if (A.length <= 1) {
+			return A;
 		}
 		
-		return output;
+		int[] left, right;
+		int middle = A.length/2;
+		
+		//Divide list into sub lists
+		left = new int[middle];
+		for (int i = 0; i < middle; i++) {
+			left[i] = A[i];
+		}
+		
+		right = new int[A.length-middle];
+		for (int i = middle; i < A.length; i++) {
+			right[i] = A[i];
+		}
+		
+		left = merge_sort(left);
+		right = merge_sort(right);
+		
+		return merge(left, right);
 	}
 	
+	/*
+	 * Merges two sorted lists together
+	 */
+	private int[] merge(int[] left, int[] right) {
+		int[] result = new int[left.length+right.length];
+		int r = 0;
+		while (left.length > 0 && right.length > 0) {
+			if (left[0] <= right[0]) {
+				result[r] = pop(left); r++;
+			} else {
+				result[r] = pop(right); r++;
+			}
+		}
+		while (left.length > 0) {
+			result[r] = pop(left); r++;
+		}
+		while (right.length > 0) {
+			result[r] = pop(right); r++;
+		}
+		return result;
+	}
 	
-	//returns the sum of the inputed array
+	/*
+	 * Pops the first item off a primitive array
+	 */
+	private int pop(int[] A){
+		int[] ret = new int[A.length-1];
+		for (int i=1;i<A.length;i++){
+			ret[i-1] = A[i];
+		}
+		int r = A[0];
+		A = ret;
+		return r;
+	}
+	
+	/*
+	 * Returns the sum of the inputed array
+	 */
 	public int sumOfDice(int[] dice){
 		int sum = 0;
 		
@@ -76,8 +124,9 @@ public class gameBackEnd {
 		return sum;
 	}
 	
-	
-	//returns the sum of all of the target numbers in the array
+	/*
+	 * Returns the sum of all of the target numbers in the array
+	 */
 	public int sumOfDice(int[] dice, int target){
 		int sum = 0;
 		
@@ -116,7 +165,7 @@ public class gameBackEnd {
 	
 	/*
 	 * Returns true if all of the numbers in the
-	 * inputed array are ordered from least to greates
+	 * inputed array are ordered from least to greatest
 	 * e.i. 1-2-3-4-5 or 2-3-4-5-6
 	 */
 	public boolean isLargeStraight(int[] dice){
@@ -243,21 +292,14 @@ public class gameBackEnd {
 	*lower level (higher tier) scoring options are available
 	*/
 	public int upperHalf(int[] dice){
-		int greatest = 0;
-		
-		if(sumOfDice(dice, 6) > sumOfDice(dice, 5) && sumOfDice(dice, 6) > sumOfDice(dice, 4) && sumOfDice(dice, 6) > sumOfDice(dice, 3) && sumOfDice(dice, 6) > sumOfDice(dice, 2) && sumOfDice(dice, 6) > sumOfDice(dice, 1)){
-			greatest = sumOfDice(dice, 6);
-		}else if(sumOfDice(dice, 5) > sumOfDice(dice, 6) && sumOfDice(dice, 5) > sumOfDice(dice, 4) && sumOfDice(dice, 5) > sumOfDice(dice, 3) && sumOfDice(dice, 5) > sumOfDice(dice, 2) && sumOfDice(dice, 5) > sumOfDice(dice, 1)){
-			greatest = sumOfDice(dice, 5);
-		}else if(sumOfDice(dice, 4) > sumOfDice(dice, 6) && sumOfDice(dice, 4) > sumOfDice(dice, 5) && sumOfDice(dice, 4) > sumOfDice(dice, 3) && sumOfDice(dice, 4) > sumOfDice(dice, 2) && sumOfDice(dice, 4) > sumOfDice(dice, 1)){
-			greatest = sumOfDice(dice, 4);
-		}else if(sumOfDice(dice, 3) > sumOfDice(dice, 6) && sumOfDice(dice, 3) > sumOfDice(dice, 5) && sumOfDice(dice, 3) > sumOfDice(dice, 4) && sumOfDice(dice, 3) > sumOfDice(dice, 2) && sumOfDice(dice, 3) > sumOfDice(dice, 1)){
-			greatest = sumOfDice(dice, 3);
-		}else if(sumOfDice(dice, 2) > sumOfDice(dice, 6) && sumOfDice(dice, 2) > sumOfDice(dice, 5) && sumOfDice(dice, 2) > sumOfDice(dice, 4) && sumOfDice(dice, 2) > sumOfDice(dice, 3) && sumOfDice(dice, 2) > sumOfDice(dice, 1)){
-			greatest = sumOfDice(dice, 2);
-		}else if(sumOfDice(dice, 1) > sumOfDice(dice, 6) && sumOfDice(dice, 1) > sumOfDice(dice, 5) && sumOfDice(dice, 1) > sumOfDice(dice, 4) && sumOfDice(dice, 1) > sumOfDice(dice, 3) && sumOfDice(dice, 1) > sumOfDice(dice, 2)){
-			greatest = sumOfDice(dice, 1);
-		}
+		ArrayList<Integer> diceSums = new ArrayList<Integer>();
+		diceSums.add(sumOfDice(dice, 6));
+		diceSums.add(sumOfDice(dice, 5));
+		diceSums.add(sumOfDice(dice, 4));
+		diceSums.add(sumOfDice(dice, 3));
+		diceSums.add(sumOfDice(dice, 2));
+		diceSums.add(sumOfDice(dice, 1));
+		int greatest = Collections.max(diceSums);
 		
 		return greatest;
 	}

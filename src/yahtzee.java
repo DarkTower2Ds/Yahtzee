@@ -4,7 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class yahtzee extends JPanel implements ItemListener{
+public class yahtzee extends JPanel implements ActionListener{
 	JCheckBox die1;
 	JCheckBox die2;
 	JCheckBox die3;
@@ -25,7 +25,7 @@ public class yahtzee extends JPanel implements ItemListener{
 	public yahtzee(){
 		super(new BorderLayout());
 		die1 = new JCheckBox("Die 1");
-		die1.setMnemonic(KeyEvent.VK_1); //<-- is that how those work?
+		die1.setMnemonic(KeyEvent.VK_1);
 		
 		die2 = new JCheckBox("Die 2");
 		die1.setMnemonic(KeyEvent.VK_2);
@@ -87,10 +87,10 @@ public class yahtzee extends JPanel implements ItemListener{
 		JButton reRollButton = new JButton("Re-Roll");
 		JButton endTurnButton = new JButton("End Turn");
 		
-		reRollButton.setActionCommand("reRoll"); //<-- that's how it works right?
+		reRollButton.setActionCommand("reRoll");
 		endTurnButton.setActionCommand("endTurn");
 		
-		reRollButton.addActionListener(this); //<-- and these?
+		reRollButton.addActionListener(this);
 		endTurnButton.addActionListener(this);
 		
 		JPanel checkPanel = new JPanel(new GridLayout(0, 1));
@@ -119,10 +119,6 @@ public class yahtzee extends JPanel implements ItemListener{
         frame.setVisible(true);
     }
 
-	public void itemStateChanged(ItemEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -137,6 +133,16 @@ public class yahtzee extends JPanel implements ItemListener{
 		int[] dice = new int[5];
 		for(int element : dice){ //<-- is that correct?
 			element = (int) (Math.random() * 5 + 1);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		String action = ae.getActionCommand();
+		if (action.equals("reRoll")) {
+			System.out.println("ReRoll pressed!"); // TODO Add action
+		} else if (action.equals("endTurn")) {
+			System.out.println("EndTurn pressed!"); // TODO Add action
 		}
 	}
 }
