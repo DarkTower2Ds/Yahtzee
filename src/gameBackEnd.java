@@ -3,14 +3,32 @@ import java.util.Collections;
 
 
 public class gameBackEnd {
-	private int[] finalScores;
+	private static int[] finalScores;
 	private int[] playerScoresUpper;
 	private int roundsLeft;
 	
 	//initializes the arrays of scores and the number of rounds left in the game
 	public gameBackEnd(int numPlayers){
 		finalScores = new int[numPlayers];
+		for(int i = 0; i < numPlayers; i++){
+			finalScores[i] = 0;
+		}
 		playerScoresUpper = new int[numPlayers];
+		for(int i = 0; i < numPlayers; i++){
+			playerScoresUpper[i] = 0;
+		}
+		roundsLeft = 13;
+	}
+	
+	public gameBackEnd(){
+		finalScores = new int[4];
+		for(int i = 0; i < 4; i++){
+			finalScores[i] = 0;
+		}
+		playerScoresUpper = new int[4];
+		for(int i = 0; i < 4; i++){
+			playerScoresUpper[i] = 0;
+		}
 		roundsLeft = 13;
 	}
 	
@@ -141,7 +159,7 @@ public class gameBackEnd {
 	
 	
 	//returns the overall score of a player
-	public int getScore(int index){
+	public static int getScore(int index){
 		return finalScores[index];
 	}
 	
