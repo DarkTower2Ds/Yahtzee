@@ -16,37 +16,44 @@ public class yahtzee extends JPanel implements ActionListener{
 	JTextArea die4Text;
 	JTextArea die5Text;
 	JTextArea die6Text;
-	JButton reRollButton;
+	static JButton reRollButton;
 	JButton endTurnButton;
 	JTextArea currentPlayer;
 	JTextArea currentPlayerScore;
 	JTextArea spacer; //halp
 	
+	int[] currentDice = new int[5];
+	int currentPlayerNumber;
+	int reRollsLeft = 3;
+	
 	public yahtzee(){
 		super(new BorderLayout());
+		
+		gameBackEnd backEnd = new gameBackEnd();
+		
+		for(int i = 0; i < currentDice.length; i++){
+			currentDice[i] = (int) (Math.random() * 6 + 1);
+		}
+		currentPlayerNumber = 0;
+		
 		die1 = new JCheckBox("Die 1");
-		die1.setMnemonic(KeyEvent.VK_1);
 		
 		die2 = new JCheckBox("Die 2");
-		die1.setMnemonic(KeyEvent.VK_2);
 		
 		die3 = new JCheckBox("Die 3");
-		die3.setMnemonic(KeyEvent.VK_3);
 		
 		die4 = new JCheckBox("Die 4");
-		die4.setMnemonic(KeyEvent.VK_4);
 		
 		die5 = new JCheckBox("Die 5");
-		die5.setMnemonic(KeyEvent.VK_5);
 		
-		die1Text = new JTextArea("1");
-		die2Text = new JTextArea("1");
-		die3Text = new JTextArea("1");
-		die4Text = new JTextArea("1");
-		die5Text = new JTextArea("1");
+		die1Text = new JTextArea("" + currentDice[0]);
+		die2Text = new JTextArea("" + currentDice[1]);
+		die3Text = new JTextArea("" + currentDice[2]);
+		die4Text = new JTextArea("" + currentDice[3]);
+		die5Text = new JTextArea("" + currentDice[4]);
 		
-		currentPlayer = new JTextArea("Player 1");
-		currentPlayerScore = new JTextArea("Score: 0");
+		currentPlayer = new JTextArea("Player " + (currentPlayerNumber + 1));
+		currentPlayerScore = new JTextArea("Score: " + backEnd.getScore(currentPlayerNumber));
 		spacer = new JTextArea("    ");
 		
 		die1Text.setEditable(false);
@@ -88,7 +95,9 @@ public class yahtzee extends JPanel implements ActionListener{
 		JButton endTurnButton = new JButton("End Turn");
 		
 		reRollButton.setActionCommand("reRoll");
+		reRollButton.setMnemonic(KeyEvent.VK_R);
 		endTurnButton.setActionCommand("endTurn");
+		endTurnButton.setMnemonic(KeyEvent.VK_E);
 		
 		reRollButton.addActionListener(this);
 		endTurnButton.addActionListener(this);
@@ -113,6 +122,7 @@ public class yahtzee extends JPanel implements ActionListener{
         
         JComponent newContentPane = new yahtzee();
         newContentPane.setOpaque(true); //content panes must be opaque
+        newContentPane.setPreferredSize(new Dimension(170, 180));
         frame.setContentPane(newContentPane);
         
         frame.pack();
@@ -135,12 +145,41 @@ public class yahtzee extends JPanel implements ActionListener{
 			element = (int) (Math.random() * 5 + 1);
 		}
 	}
+	
+	protected void updateGame(){
+		die1Text.setText("" + currentDice[0]);
+		die2Text.setText("" + currentDice[1]);
+		die3Text.setText("" + currentDice[2]);
+		die4Text.setText("" + currentDice[3]);
+		die5Text.setText("" + currentDice[4]);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		String action = ae.getActionCommand();
 		if (action.equals("reRoll")) {
-			System.out.println("ReRoll pressed!"); // TODO Add action
+			if(die1.isSelected()){
+				currentDice[0] = (int) (Math.random() * 6 + 1);
+			}
+			if(die2.isSelected()){
+				currentDice[1] = (int) (Math.random() * 6 + 1);
+			}
+			if(die3.isSelected()){
+				currentDice[2] = (int) (Math.random() * 6 + 1);
+			}
+			if(die4.isSelected()){
+				currentDice[3] = (int) (Math.random() * 6 + 1);
+			}
+			if(die5.isSelected()){
+				currentDice[4] = (int) (Math.random() * 6 + 1);
+			}
+			
+			reRollsLeft--;
+			if(reRollsLeft == 0){
+				reRollButton.setEnabled(false);
+			}
+			
+			updateGame();
 		} else if (action.equals("endTurn")) {
 			System.out.println("EndTurn pressed!"); // TODO Add action
 		}
