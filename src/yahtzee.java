@@ -16,11 +16,13 @@ public class yahtzee extends JPanel implements ActionListener{
 	JTextArea die4Text;
 	JTextArea die5Text;
 	JTextArea die6Text;
-	static JButton reRollButton;
+	JButton reRollButton;
 	JButton endTurnButton;
 	JTextArea currentPlayer;
 	JTextArea currentPlayerScore;
 	JTextArea spacer; //halp
+	
+	gameBackEnd backEnd;
 	
 	int[] currentDice = new int[5];
 	int currentPlayerNumber;
@@ -29,11 +31,10 @@ public class yahtzee extends JPanel implements ActionListener{
 	public yahtzee(){
 		super(new BorderLayout());
 		
-		gameBackEnd backEnd = new gameBackEnd();
+		backEnd = new gameBackEnd();
 		
-		for(int i = 0; i < currentDice.length; i++){
-			currentDice[i] = (int) (Math.random() * 6 + 1);
-		}
+		reRollAllDice();
+		
 		currentPlayerNumber = 0;
 		
 		die1 = new JCheckBox("Die 1");
@@ -91,8 +92,8 @@ public class yahtzee extends JPanel implements ActionListener{
 		
 		
 		
-		JButton reRollButton = new JButton("Re-Roll");
-		JButton endTurnButton = new JButton("End Turn");
+		reRollButton = new JButton("Re-Roll");
+		endTurnButton = new JButton("End Turn");
 		
 		reRollButton.setActionCommand("reRoll");
 		reRollButton.setMnemonic(KeyEvent.VK_R);
@@ -139,10 +140,10 @@ public class yahtzee extends JPanel implements ActionListener{
 		
     }
 	
-	public void nextTurn(int player){
-		int[] dice = new int[5];
-		for(int element : dice){ //<-- is that correct?
-			element = (int) (Math.random() * 5 + 1);
+    //Re-Rolls every dice
+	public void reRollAllDice(){
+		for(int i = 0; i < currentDice.length; i++){ //<-- is that correct?
+			currentDice[i] = (int) (Math.random() * 6 + 1);
 		}
 	}
 	
@@ -181,7 +182,13 @@ public class yahtzee extends JPanel implements ActionListener{
 			
 			updateGame();
 		} else if (action.equals("endTurn")) {
-			System.out.println("EndTurn pressed!"); // TODO Add action
+			backEnd.endTurn(currentPlayerNumber, currentDice);
+			
+			reRollAllDice();
+			currentPlayerNumber++;
+			reRollsLeft = 3;
+			
+			updateGame();
 		}
 	}
 }
