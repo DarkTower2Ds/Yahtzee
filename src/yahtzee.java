@@ -22,16 +22,17 @@ public class yahtzee extends JPanel implements ActionListener{
 	JTextArea currentPlayerScore;
 	JTextArea spacer; //halp
 	
-	gameBackEnd backEnd;
+	static gameBackEnd backEnd =  new gameBackEnd();
 	
 	int[] currentDice = new int[5];
 	int currentPlayerNumber;
 	int reRollsLeft = 3;
+	int numberOfPlayers = 4;
 	
 	public yahtzee(){
 		super(new BorderLayout());
 		
-		backEnd = new gameBackEnd();
+		//backEnd = new gameBackEnd();
 		
 		reRollAllDice();
 		
@@ -54,7 +55,7 @@ public class yahtzee extends JPanel implements ActionListener{
 		die5Text = new JTextArea("" + currentDice[4]);
 		
 		currentPlayer = new JTextArea("Player " + (currentPlayerNumber + 1));
-		currentPlayerScore = new JTextArea("Score: " + backEnd.getScore(currentPlayerNumber));
+		currentPlayerScore = new JTextArea(backEnd.getScore(currentPlayerNumber) + " Points");
 		spacer = new JTextArea("    ");
 		
 		die1Text.setEditable(false);
@@ -153,6 +154,9 @@ public class yahtzee extends JPanel implements ActionListener{
 		die3Text.setText("" + currentDice[2]);
 		die4Text.setText("" + currentDice[3]);
 		die5Text.setText("" + currentDice[4]);
+		
+		currentPlayer.setText("Player " + (currentPlayerNumber + 1));
+		currentPlayerScore.setText(backEnd.getScore(currentPlayerNumber) + " Points");
 	}
 
 	@Override
@@ -181,11 +185,17 @@ public class yahtzee extends JPanel implements ActionListener{
 			}
 			
 			updateGame();
-		} else if (action.equals("endTurn")) {
+		}
+		if (action.equals("endTurn")) {
 			backEnd.endTurn(currentPlayerNumber, currentDice);
 			
 			reRollAllDice();
-			currentPlayerNumber++;
+			if(currentPlayerNumber + 1 >= numberOfPlayers){
+				currentPlayerNumber = 0;
+				backEnd.finishedRound();
+			}else{
+				currentPlayerNumber++;
+			}
 			reRollsLeft = 3;
 			
 			updateGame();

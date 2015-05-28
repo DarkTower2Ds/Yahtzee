@@ -84,7 +84,7 @@ public class gameBackEnd {
 		}
 		
 		right = new int[A.length-middle];
-		for (int i = middle; i < A.length; i++) {
+		for (int i = middle; i < A.length - middle; i++) {
 			right[i] = A[i];
 		}
 		
@@ -100,17 +100,17 @@ public class gameBackEnd {
 	private int[] merge(int[] left, int[] right) {
 		int[] result = new int[left.length+right.length];
 		int r = 0;
-		while (left.length > 0 && right.length > 0) {
+		while (left.length > 0 && right.length > 0 && r <= result.length - 1) {
 			if (left[0] <= right[0]) {
 				result[r] = pop(left); r++;
 			} else {
 				result[r] = pop(right); r++;
 			}
 		}
-		while (left.length > 0) {
+		while (left.length > 0 && r <= result.length - 1) {
 			result[r] = pop(left); r++;
 		}
-		while (right.length > 0) {
+		while (right.length > 0 && r <= result.length - 1) {
 			result[r] = pop(right); r++;
 		}
 		return result;
@@ -169,13 +169,18 @@ public class gameBackEnd {
 	 * first one. If all are the same, it returns true.
 	 */
 	public boolean isYahtzee(int[] dice){
-		boolean yahtzee = true;
+		boolean yahtzee = false;
 		int firstValue = dice[0];
+		int counter = 0;
 		
 		for(int i = 0; i < dice.length; i++){
-			if(dice[i] != firstValue){
-				yahtzee = false;
+			if(dice[i] == firstValue){
+				counter++;
 			}
+		}
+		
+		if(counter == 5){
+			yahtzee = true;
 		}
 		
 		return yahtzee;
@@ -320,5 +325,9 @@ public class gameBackEnd {
 		int greatest = Collections.max(diceSums);
 		
 		return greatest;
+	}
+	
+	public void finishedRound(){
+		roundsLeft--;
 	}
 }
