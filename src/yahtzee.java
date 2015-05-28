@@ -1,7 +1,9 @@
 import java.awt.*;
+
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.ImageIcon;
 
 
 public class yahtzee extends JPanel implements ActionListener{
@@ -27,10 +29,12 @@ public class yahtzee extends JPanel implements ActionListener{
 	int[] currentDice = new int[5];
 	int currentPlayerNumber;
 	int reRollsLeft = 3;
-	int numberOfPlayers = 4;
+	int numberOfPlayers;
 	
-	public yahtzee(){
+	public yahtzee(int numPlayers){
 		super(new BorderLayout());
+		
+		numberOfPlayers = numPlayers;
 		
 		//backEnd = new gameBackEnd();
 		
@@ -118,11 +122,11 @@ public class yahtzee extends JPanel implements ActionListener{
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 	}
 	
-	private static void createAndShowGUI() {
+	private static void createAndShowGUI(int numPlyrs) {
         JFrame frame = new JFrame("Yahtzee");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        JComponent newContentPane = new yahtzee();
+        JComponent newContentPane = new yahtzee(numPlyrs);
         newContentPane.setOpaque(true); //content panes must be opaque
         newContentPane.setPreferredSize(new Dimension(170, 180));
         frame.setContentPane(newContentPane);
@@ -132,9 +136,13 @@ public class yahtzee extends JPanel implements ActionListener{
     }
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+    	//need to add a way to get user input for number of players
+    	//JOptionPane maybe?
+    	final int numPPL = 4;
+        
+    	javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI();
+                createAndShowGUI(numPPL);
             }
         });
 		
@@ -192,11 +200,28 @@ public class yahtzee extends JPanel implements ActionListener{
 			reRollAllDice();
 			if(currentPlayerNumber + 1 >= numberOfPlayers){
 				currentPlayerNumber = 0;
+				
+				if(backEnd.getRoundsLeft() == 0){
+					reRollButton.setEnabled(false);
+					endTurnButton.setEnabled(false);
+					
+					die1.setEnabled(false);
+					die2.setEnabled(false);
+					die3.setEnabled(false);
+					die4.setEnabled(false);
+					die5.setEnabled(false);
+					
+					backEnd.endGame();
+					
+					System.exit(0);
+				}
 				backEnd.finishedRound();
 			}else{
 				currentPlayerNumber++;
 			}
+			
 			reRollsLeft = 3;
+			reRollButton.setEnabled(true);
 			
 			updateGame();
 		}

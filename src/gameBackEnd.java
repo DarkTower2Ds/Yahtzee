@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JOptionPane;
 
 
 public class gameBackEnd {
@@ -39,9 +40,10 @@ public class gameBackEnd {
 	 * If no matches are made, then it goes to "Chance"
 	 */
 	public void endTurn(int player, int[] diceInput){
-		int[] finalDice = merge_sort(diceInput);
+		int[] finalDice = diceSort(diceInput);
 		
 		if(isYahtzee(finalDice)){
+			System.out.println("Got a yahtzee!");
 			finalScores[player] += 50;
 		}else if(isLargeStraight(finalDice)){
 			finalScores[player] += 40;
@@ -57,19 +59,48 @@ public class gameBackEnd {
 			playerScoresUpper[player] += upperHalf(finalDice);
 			finalScores[player] += upperHalf(finalDice);
 		}
-		
-		if(player == finalScores.length - 1){
-			roundsLeft--;
-		}
 	}
 	
+	public void endGame(){
+		for(int i = 0; i < playerScoresUpper.length; i++){
+			if(playerScoresUpper[i] >= 63){
+				finalScores[i] += 35;
+			}
+		}
+		
+		int indexOfWinner = 0;
+		int scoreOfWinner = finalScores[0];
+		for(int w = 0; w < finalScores.length - 1; w++){
+			if(finalScores[w] > scoreOfWinner){
+				indexOfWinner = w;
+				scoreOfWinner = finalScores[w];
+			}
+		}
+		
+		JOptionPane.showMessageDialog(null, "The Winner is Player " + (indexOfWinner + 1) + " with a score of " + scoreOfWinner + "!", "We Have A Winner!", JOptionPane.INFORMATION_MESSAGE);
+	}
 	
+	public int[] diceSort(int[] dice){
+		for(int i = 0; i < dice.length; i++){
+			for(int k = i + 1; k < dice.length; k++){
+				if(dice[k] < dice[i]){
+					int temp = dice[i];
+					dice[i] = dice[k];
+					dice[k] = temp;
+				}
+			}
+		}
+
+		return dice;
+	}
 	
 	
 	/*
 	 * Sorts the inputed array
-	 */
+	 *
 	public int[] merge_sort(int[] A) {
+		System.out.println("Array Before Sort: " + arrayToString(A));
+		
 		if (A.length <= 1) {
 			return A;
 		}
@@ -96,7 +127,7 @@ public class gameBackEnd {
 	
 	/*
 	 * Merges two sorted lists together
-	 */
+	 *
 	private int[] merge(int[] left, int[] right) {
 		int[] result = new int[left.length+right.length];
 		int r = 0;
@@ -113,12 +144,14 @@ public class gameBackEnd {
 		while (right.length > 0 && r <= result.length - 1) {
 			result[r] = pop(right); r++;
 		}
+		
+		System.out.println("Array After Sort: " + arrayToString(result));
 		return result;
 	}
 	
 	/*
 	 * Pops the first item off a primitive array
-	 */
+	 *
 	private int pop(int[] A){
 		int[] ret = new int[A.length-1];
 		for (int i=1;i<A.length;i++){
@@ -128,6 +161,7 @@ public class gameBackEnd {
 		A = ret;
 		return r;
 	}
+	*/
 	
 	/*
 	 * Returns the sum of the inputed array
@@ -180,6 +214,7 @@ public class gameBackEnd {
 		}
 		
 		if(counter == 5){
+			System.out.println("It was true!");
 			yahtzee = true;
 		}
 		
@@ -329,5 +364,19 @@ public class gameBackEnd {
 	
 	public void finishedRound(){
 		roundsLeft--;
+	}
+	
+	public String arrayToString(int[] array){
+		String result = "";
+		
+		for(int i = 0; i < array.length; i++){
+			result += array[i] + ", ";
+		}
+		
+		return result;
+	}
+	
+	public int getRoundsLeft(){
+		return roundsLeft;
 	}
 }
