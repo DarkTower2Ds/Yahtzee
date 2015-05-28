@@ -173,6 +173,7 @@ public class yahtzee extends JPanel implements ActionListener{
 		if (action.equals("reRoll")) {
 			if(die1.isSelected()){
 				currentDice[0] = (int) (Math.random() * 6 + 1);
+
 			}
 			if(die2.isSelected()){
 				currentDice[1] = (int) (Math.random() * 6 + 1);
@@ -219,6 +220,12 @@ public class yahtzee extends JPanel implements ActionListener{
 			}else{
 				currentPlayerNumber++;
 			}
+			
+			die1.setSelected(false);
+			die2.setSelected(false);
+			die3.setSelected(false);
+			die4.setSelected(false);
+			die5.setSelected(false);
 			
 			reRollsLeft = 3;
 			reRollButton.setEnabled(true);
