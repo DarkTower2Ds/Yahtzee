@@ -43,7 +43,6 @@ public class gameBackEnd {
 		int[] finalDice = diceSort(diceInput);
 		
 		if(isYahtzee(finalDice)){
-			System.out.println("Got a yahtzee!");
 			finalScores[player] += 50;
 		}else if(isLargeStraight(finalDice)){
 			finalScores[player] += 40;
@@ -214,7 +213,6 @@ public class gameBackEnd {
 		}
 		
 		if(counter == 5){
-			System.out.println("It was true!");
 			yahtzee = true;
 		}
 		

@@ -24,7 +24,7 @@ public class yahtzee extends JPanel implements ActionListener{
 	JTextArea currentPlayerScore;
 	JTextArea spacer; //halp
 	
-	static gameBackEnd backEnd =  new gameBackEnd();
+	static gameBackEnd backEnd;
 	
 	int[] currentDice = new int[5];
 	int currentPlayerNumber;
@@ -36,7 +36,7 @@ public class yahtzee extends JPanel implements ActionListener{
 		
 		numberOfPlayers = numPlayers;
 		
-		//backEnd = new gameBackEnd();
+		backEnd = new gameBackEnd(numPlayers);
 		
 		reRollAllDice();
 		
@@ -138,7 +138,8 @@ public class yahtzee extends JPanel implements ActionListener{
     public static void main(String[] args) {
     	//need to add a way to get user input for number of players
     	//JOptionPane maybe?
-    	final int numPPL = 4;
+    	String halp = JOptionPane.showInputDialog("How many players?");
+    	final int numPPL = Integer.parseInt(halp);
         
     	javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
